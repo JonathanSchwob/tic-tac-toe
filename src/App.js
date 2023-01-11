@@ -1,21 +1,31 @@
 import './App.css';
 
-function Square() {
-  return <div className="square"></div>
+function Square({onSquareClick}) {
+  return <button onClick={onSquareClick} className="square"></button>
 }
 
 function Board() {
+  function handleClick() {
+    console.log('x')
+  }
+
   return (
     <>
-      <Square />
-      <Square />
-      <Square />
-      <Square />
-      <Square />
-      <Square />
-      <Square />
-      <Square />
-      <Square />
+      <div className="board-row">
+        <Square onSquareClick={() => handleClick()} />
+        <Square />
+        <Square />
+      </div>
+      <div className="board-row">
+        <Square />
+        <Square />
+        <Square />
+      </div>
+      <div className="board-row">
+        <Square />
+        <Square />
+        <Square />
+      </div>
     </>
   );
 }
