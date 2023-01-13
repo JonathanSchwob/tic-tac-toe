@@ -14,7 +14,7 @@ function Game() {
   const [board, setBoard] = useState(Array(9).fill(null));
 
   function handleClick(position) {
-    if (board[position]) {
+    if (board[position] || calculateWinner()) {
       return;
     }
 
@@ -29,6 +29,7 @@ function Game() {
     }
 
     setBoard(newBoard);
+
     console.log(newBoard);
   }
 
@@ -71,7 +72,11 @@ function Game() {
         <Square onSquareClick={() => handleClick(7)} value={board[7]} />
         <Square onSquareClick={() => handleClick(8)} value={board[8]} />
       </div>
-      <div className="current-turn">Current Turn: {xIsNext ? "X" : "O"}</div>
+      <div className="status">
+        {calculateWinner()
+          ? "Winner: " + calculateWinner()
+          : "Current Turn: " + (xIsNext ? "X" : "O")}
+      </div>
     </>
   );
 }
