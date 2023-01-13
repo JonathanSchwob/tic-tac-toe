@@ -29,8 +29,6 @@ function Game() {
     }
 
     setBoard(newBoard);
-
-    console.log(newBoard);
   }
 
   function calculateWinner() {
@@ -48,8 +46,12 @@ function Game() {
     for (let i = 0; i < winStates.length; i++) {
       let [a, b, c] = winStates[i];
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-        return board[a];
+        return board[a] + " Wins!";
       }
+    }
+
+    if (!board.includes(null)) {
+      return "Draw";
     }
 
     return null;
@@ -74,7 +76,7 @@ function Game() {
       </div>
       <div className="status">
         {calculateWinner()
-          ? "Winner: " + calculateWinner()
+          ? "Result: " + calculateWinner()
           : "Current Turn: " + (xIsNext ? "X" : "O")}
       </div>
     </>
