@@ -10,13 +10,48 @@ function Square({ onSquareClick, value }) {
 }
 
 function Game() {
+  const [xIsNext, setXIsNext] = useState(true);
   const [board, setBoard] = useState(Array(9).fill(null));
 
   function handleClick(position) {
+    if (board[position]) {
+      return;
+    }
+
     let newBoard = board.slice();
-    newBoard[position] = "X";
+
+    if (xIsNext) {
+      newBoard[position] = "X";
+      setXIsNext(false);
+    } else {
+      newBoard[position] = "O";
+      setXIsNext(true);
+    }
+
     setBoard(newBoard);
     console.log(newBoard);
+  }
+
+  function calculateWinner() {
+    const winStates = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    for (let i = 0; i < winStates.length; i++) {
+      let [a, b, c] = winStates[i];
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        return board[a];
+      }
+    }
+
+    return null;
   }
 
   return (
@@ -36,6 +71,7 @@ function Game() {
         <Square onSquareClick={() => handleClick(7)} value={board[7]} />
         <Square onSquareClick={() => handleClick(8)} value={board[8]} />
       </div>
+      <div className="current-turn">Current Turn: {xIsNext ? "X" : "O"}</div>
     </>
   );
 }

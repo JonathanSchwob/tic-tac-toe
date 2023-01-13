@@ -24,3 +24,7 @@ body {
   content: "";
   display: table;
 }
+
+.current-turn {
+  padding-top: 10px;
+}
