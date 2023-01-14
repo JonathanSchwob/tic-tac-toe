@@ -28,3 +28,8 @@ body {
 .status {
   padding-top: 10px;
 }
+
+.reset {
+  display: block;
+  margin-top: 10px;
+}

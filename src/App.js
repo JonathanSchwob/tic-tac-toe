@@ -31,6 +31,12 @@ function Game() {
     setBoard(newBoard);
   }
 
+  function handleReset() {
+    let resetBoard = Array(9).fill(null);
+    setBoard(resetBoard);
+    setXIsNext(true);
+  }
+
   function calculateWinner() {
     const winStates = [
       [0, 1, 2],
@@ -75,9 +81,16 @@ function Game() {
         <Square onSquareClick={() => handleClick(8)} value={board[8]} />
       </div>
       <div className="status">
-        {calculateWinner()
-          ? "Result: " + calculateWinner()
-          : "Current Turn: " + (xIsNext ? "X" : "O")}
+        {calculateWinner() ? (
+          <>
+            Result: {calculateWinner()}{" "}
+            <button className="reset" onClick={() => handleReset()}>
+              Reset
+            </button>
+          </>
+        ) : (
+          "Current Turn: " + (xIsNext ? "X" : "O")
+        )}
       </div>
     </>
   );
