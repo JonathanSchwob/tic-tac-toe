@@ -9,10 +9,7 @@ function Square({ onSquareClick, value }) {
   );
 }
 
-function Game() {
-  const [xIsNext, setXIsNext] = useState(true);
-  const [board, setBoard] = useState(Array(9).fill(null));
-
+function Board({ xIsNext, board, onPlay, onReset }) {
   function handleClick(position) {
     if (board[position] || calculateWinner()) {
       return;
@@ -22,19 +19,10 @@ function Game() {
 
     if (xIsNext) {
       newBoard[position] = "X";
-      setXIsNext(false);
     } else {
       newBoard[position] = "O";
-      setXIsNext(true);
     }
-
-    setBoard(newBoard);
-  }
-
-  function handleReset() {
-    let resetBoard = Array(9).fill(null);
-    setBoard(resetBoard);
-    setXIsNext(true);
+    onPlay(newBoard);
   }
 
   function calculateWinner() {
@@ -84,7 +72,7 @@ function Game() {
         {calculateWinner() ? (
           <>
             Result: {calculateWinner()}{" "}
-            <button className="reset" onClick={() => handleReset()}>
+            <button className="reset" onClick={() => onReset()}>
               Reset
             </button>
           </>
@@ -93,6 +81,39 @@ function Game() {
         )}
       </div>
     </>
+  );
+}
+
+function Game() {
+  const [xIsNext, setXIsNext] = useState(true);
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const currentBoard = history[history.length - 1];
+
+  function handlePlay(nextBoard) {
+    setHistory([...history, nextBoard]);
+    setXIsNext(!xIsNext);
+  }
+
+  function handleReset() {
+    let resetBoard = Array(9).fill(null);
+    setHistory([Array(9).fill(null)]);
+    setXIsNext(true);
+  }
+
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board
+          xIsNext={xIsNext}
+          board={currentBoard}
+          onPlay={handlePlay}
+          onReset={handleReset}
+        />
+      </div>
+      <div className="game-info">
+        <ol></ol>
+      </div>
+    </div>
   );
 }
 
