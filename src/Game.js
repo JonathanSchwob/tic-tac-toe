@@ -8,10 +8,13 @@ new Darkmode().showWidget();
 function Game() {
   const [xIsNext, setXIsNext] = useState(true);
   const [history, setHistory] = useState([Array(9).fill(null)]);
-  const currentBoard = history[history.length - 1];
+  const [currentMove, setCurrentMove] = useState(0);
+  const currentBoard = history[currentMove];
 
   function handlePlay(currentBoard) {
-    setHistory([...history, currentBoard]);
+    const nextHistory = [...history.slice(0, currentMove + 1), currentBoard];
+    setHistory(nextHistory);
+    setCurrentMove(nextHistory.length - 1);
     setXIsNext(!xIsNext);
   }
 
@@ -25,19 +28,20 @@ function Game() {
   }
 
   function jumpTo(nextMove) {
-    //TODO
+    setCurrentMove(nextMove);
+    setXIsNext(nextMove % 2 === 0);
   }
 
   const moves = history.map((board, move) => {
     let description;
     if (move > 0) {
-      description = "Go to move#" + move;
+      description = "Go to move #" + move;
     } else {
       description = "Go to game start";
     }
 
     return (
-      <li>
+      <li key={move}>
         <button onClick={() => jumpTo(move)}>{description}</button>
       </li>
     );
